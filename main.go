@@ -1,42 +1,23 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
-	"log"
 
-	"github.com/Fovir-GitHub/go-mysql/models"
+	"github.com/Fovir-GitHub/go-mysql/handlers"
+	"github.com/Fovir-GitHub/go-mysql/router"
 	"github.com/Fovir-GitHub/go-mysql/utils"
 )
 
 func main() {
-	var db *sql.DB
-	var err error
+	const PORT = 8080
 
-	db = utils.ConnectToDatabase("root", "tcp", "127.0.0.1:3306", "recordings")
+	db := utils.ConnectToDatabase("root", "tcp", "127.0.0.1:3306", "recordings")
 	fmt.Println("Connected!")
+	defer db.Close()
 
-	albums, err := utils.QueryAlbumByArtist(db, "John Coltrane")
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("Albums found: %v\n", albums)
+	albumHandler := &handlers.AlbumHandler{DB: db}
+	r := router.SetupRouter(albumHandler)
 
-	alb, err := utils.QueryAlbumByID(db, 2)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("Album found: %v\n", alb)
-
-	albID, err := utils.AddAlbum(db, models.Album{Title: "The Modern Sound of Betty Carter", Artist: "Betty Carter", Price: 49.99})
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("ID of added album: %v\n", albID)
-
-	deletedAlbID, err := utils.DeleteAlbumByID(db, albID)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("ID removed: %v\n", deletedAlbID)
+	fmt.Printf("Server running at http://localhost:%v", PORT)
+	r.Run(fmt.Sprintf(":%v", PORT))
 }
