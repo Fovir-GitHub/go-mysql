@@ -7,7 +7,8 @@ import (
 
 func SetupRouter(albumHandler *handlers.AlbumHandler) *gin.Engine {
 	r := gin.Default()
-	r.GET("/albums/:id", albumHandler.GetByID)
+	r.GET("/albums/id/:id", albumHandler.GetByID)
+	r.GET("/albums/artist/:artist", albumHandler.GetByArtist)
 
 	return r
 }

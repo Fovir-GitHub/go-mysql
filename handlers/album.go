@@ -10,7 +10,7 @@ import (
 )
 
 type AlbumHandler struct {
-	db *sql.DB
+	DB *sql.DB
 }
 
 func (h *AlbumHandler) GetByID(c *gin.Context) {
@@ -20,10 +20,20 @@ func (h *AlbumHandler) GetByID(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid ID"})
 		return
 	}
-	album, err := utils.QueryAlbumByID(h.db, id)
+	album, err := utils.QueryAlbumByID(h.DB, id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, album)
+}
+
+func (h *AlbumHandler) GetByArtist(c *gin.Context) {
+	name := c.Param("artist")
+	albums, err := utils.QueryAlbumByArtist(h.DB, name)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, albums)
 }
