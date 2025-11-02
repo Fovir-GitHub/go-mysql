@@ -54,6 +54,12 @@ func main() {
 		log.Fatal(err)
 	}
 	fmt.Printf("ID of added album: %v\n", albID)
+
+	deletedAlbID, err := deleteAlbumByID(albID)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("ID removed: %v\n", deletedAlbID)
 }
 
 func alnumsByArtist(name string) ([]Album, error) {
@@ -99,5 +105,16 @@ func addAlbum(alb Album) (int64, error) {
 	if err != nil {
 		return 0, fmt.Errorf("addAlbum: %v", err)
 	}
+	return id, nil
+}
+
+func deleteAlbumByID(id int64) (int64, error) {
+	result, err := db.Exec("DELETE FROM album WHERE id = ?", id)
+	if err != nil {
+		return 0, fmt.Errorf("removeAlbumByID %d: %v", id, err)
+	} else if rowChanged, err := result.RowsAffected(); rowChanged < 1 || err != nil {
+		return 0, fmt.Errorf("removeAlbumByID %d: ID does not exist", id)
+	}
+
 	return id, nil
 }
