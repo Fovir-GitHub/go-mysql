@@ -15,7 +15,6 @@
       buildInputs = with pkgs; [
         mysql80
         just
-        go
       ];
 
       # Shell hooks.
