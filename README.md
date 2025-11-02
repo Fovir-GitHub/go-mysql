@@ -2,6 +2,8 @@
 
 This repo stores source code of learning `Go` + `MySQL`.
 
+Learning resource: [go.dev](https://go.dev/doc/tutorial/database-access)
+
 # Getting Start
 
 0. Set up the dev shell:
