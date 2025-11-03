@@ -39,7 +39,7 @@ func (h *AlbumHandler) GetByArtist(c *gin.Context) {
 	c.JSON(http.StatusOK, albums)
 }
 
-func (h *AlbumHandler) PostAlbum(c *gin.Context) {
+func (h *AlbumHandler) PostAddAlbum(c *gin.Context) {
 	var alb models.Album
 	if err := c.BindJSON(&alb); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
