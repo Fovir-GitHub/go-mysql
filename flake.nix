@@ -25,7 +25,7 @@
       shellHook = ''
         echo "Entering the development environment!"
         mysql --version
-
+        npm i --save-dev prettier-plugin-svelte prettier
         echo 'Just Operations:'
         echo '  "just init" -- initialize MySQL.'
         echo '  "just server" -- start MySQL server.'
