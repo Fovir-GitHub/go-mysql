@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/Fovir-GitHub/go-mysql/models"
 	"github.com/Fovir-GitHub/go-mysql/utils"
 	"github.com/gin-gonic/gin"
 )
@@ -36,4 +37,18 @@ func (h *AlbumHandler) GetByArtist(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, albums)
+}
+
+func (h *AlbumHandler) PostAlbum(c *gin.Context) {
+	var alb models.Album
+	if err := c.BindJSON(&alb); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	albID, err := utils.AddAlbum(h.DB, alb)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, albID)
 }
