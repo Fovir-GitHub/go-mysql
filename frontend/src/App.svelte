@@ -22,6 +22,19 @@
         error = e.message;
       }
     })
+
+    async function handleRemove(id : number) {
+      try {
+        const res = await fetch(`http://localhost:8080/albums/delete/${id}`, {method: 'POST'});
+
+        if (!res.ok) {
+          throw new Error(`HTTP error: ${res.status}`);
+        }
+        albums = albums ? albums.filter(album => album.id !== id) : null;
+      } catch (e : any) {
+        error = e.message;
+      }
+    }
 </script>
 
 <main>
@@ -32,7 +45,10 @@
   {:else}
     <ul>
       {#each albums as album}
-        <li><strong>{album.title} by {album.artist} - ${album.price}</strong></li>
+        <div>
+          <li><strong>{album.title} by {album.artist} - ${album.price}</strong></li>
+          <button onclick={()=>handleRemove(album.id)}>Remove</button>
+        </div>
       {/each}
     </ul>
   {/if}
