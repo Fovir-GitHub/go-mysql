@@ -54,6 +54,25 @@ func DeleteAlbumByID(db *sql.DB, id int64) (int64, error) {
 	return id, nil
 }
 
+func QueryAllAlbums(db *sql.DB) ([]models.Album, error) {
+	var albums []models.Album
+	rows, err := db.Query(fmt.Sprintf("SELECT * FROM %v", DATABASE_NAME))
+	if err != nil {
+		return nil, fmt.Errorf("QueryAllAlbums: %v", err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var alb models.Album
+		if err := rows.Scan(&alb.ID, &alb.Title, &alb.Artist, &alb.Price); err != nil {
+			return nil, fmt.Errorf("QueryAllAlbums: %v", err)
+		}
+		albums = append(albums, alb)
+	}
+
+	return albums, nil
+}
+
 func QueryAlbumByArtist(db *sql.DB, name string) ([]models.Album, error) {
 	var albums []models.Album
 	rows, err := db.Query(fmt.Sprintf("SELECT * FROM %v WHERE artist = ?", DATABASE_NAME), name)

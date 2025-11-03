@@ -29,6 +29,15 @@ func (h *AlbumHandler) GetByID(c *gin.Context) {
 	c.JSON(http.StatusOK, album)
 }
 
+func (h *AlbumHandler) GetAllAlbums(c *gin.Context) {
+	albums, err := utils.QueryAllAlbums(h.DB)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, albums)
+}
+
 func (h *AlbumHandler) GetByArtist(c *gin.Context) {
 	name := c.Param("artist")
 	albums, err := utils.QueryAlbumByArtist(h.DB, name)
