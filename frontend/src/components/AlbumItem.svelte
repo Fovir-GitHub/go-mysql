@@ -7,5 +7,5 @@
 
 <li>
   <strong>{album.title} by {album.artist} - ${album.price}</strong>
-  <button onclick={() => handleRemove(album.id)}>Remove</button>
+  <button on:click={() => handleRemove(album.id)}>Remove</button>
 </li>
