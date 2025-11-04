@@ -25,8 +25,8 @@
 
   {#if error}
     <p style="color: red">{error}</p>
-  {:else if !albums}
-    <p>Loading albums...</p>
+  {:else if albums.length === 0}
+    <p>No album</p>
   {:else}
     <AlbumList bind:albums />
   {/if}
