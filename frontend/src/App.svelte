@@ -4,7 +4,7 @@
   import type { Album } from "./types/album";
   import AddAlbumForm from "./components/AddAlbumForm.svelte";
 
-  let albums: Album[] | null = null;
+  let albums: Album[] = [];
   let error: string | null = null;
 
   onMount(async () => {
@@ -21,7 +21,7 @@
 </script>
 
 <main>
-  <AddAlbumForm />
+  <AddAlbumForm bind:albums />
 
   {#if error}
     <p style="color: red">{error}</p>

@@ -1,15 +1,41 @@
 <script lang="ts">
   import type { Album } from "../types/album";
 
+  export let albums: Album[];
+
   let formData: Album = {
     id: 0,
     title: "",
     artist: "",
     price: 0,
   };
+
+  async function onSubmit() {
+    const res = await fetch(`http://localhost:8080/albums/add`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+
+    const newAlbumID: number = await res.json();
+
+    if (res.ok) {
+      albums = [...albums, { ...formData, id: newAlbumID }];
+    }
+
+    formData = {
+      id: 0,
+      title: "",
+      artist: "",
+      price: 0,
+    };
+  }
 </script>
 
-<form class="flex flex-col gap-2 m-20">
+<form
+  class="flex flex-col gap-2 m-20"
+  on:submit|preventDefault={onSubmit}
+>
   <div
     class="flex flex-col gap-2 w-100 *:flex *:gap-2 *:justify-between *:*:bg-gray-400 *:*:pl-2"
   >
