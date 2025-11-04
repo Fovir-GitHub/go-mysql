@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import AlbumList from "./components/AlbumList.svelte";
   import type { Album } from "./types/album";
+  import AddAlbumForm from "./components/AddAlbumForm.svelte";
 
   let albums: Album[] | null = null;
   let error: string | null = null;
@@ -20,6 +21,8 @@
 </script>
 
 <main>
+  <AddAlbumForm />
+
   {#if error}
     <p style="color: red">{error}</p>
   {:else if !albums}
